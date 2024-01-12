@@ -260,17 +260,12 @@ local function write_output(linenr, out)
     out_table[#out_table + 1] =
       string.format("%s `<no output>`", M.opts.results_label)
   else
-    if #out == 1 then
-      out_table[#out_table + 1] =
-        string.format("%s `%s`", M.opts.results_label, out[1])
-    else
-      out_table[#out_table + 1] = M.opts.results_label
-      out_table[#out_table + 1] = code_block_start()
-      for _, s in pairs(out) do
-        out_table[#out_table + 1] = s:gsub("\\n", "")
-      end
-      out_table[#out_table + 1] = code_block_end()
+    out_table[#out_table + 1] = M.opts.results_label
+    out_table[#out_table + 1] = code_block_start()
+    for _, s in pairs(out) do
+      out_table[#out_table + 1] = s:gsub("\\n", "")
     end
+    out_table[#out_table + 1] = code_block_end()
   end
 
   -- Add an additional new line after the end, if it doesn't already exist.
