@@ -254,7 +254,7 @@ end
 
 -- Writes output of the excuted command after the linenr line.
 -- @param out Table containing lines from the output.
-local function write_output(linenr, out)
+local function write_output(linenr, out, lang_options)
   local out_table = { "" }
   if out == nil then
     out_table[#out_table + 1] =
@@ -262,6 +262,8 @@ local function write_output(linenr, out)
   else
     out_table[#out_table + 1] = M.opts.results_label
     out_table[#out_table + 1] = code_block_start()
+      .. (lang_options.result_language_code or "")
+    -- end
     for _, s in pairs(out) do
       out_table[#out_table + 1] = s:gsub("\\n", "")
     end
@@ -412,7 +414,7 @@ function M:eval_code_block()
   local eval_output, rc =
     eval_code(lang_name, lang_options, temp_filename, code, M.opts.exec_timeout)
   remove_previous_output(linenr_until + 1)
-  write_output(linenr_until, eval_output)
+  write_output(linenr_until, eval_output, lang_options)
 end
 
 function M:eval_clean_results()
